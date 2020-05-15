@@ -1,6 +1,6 @@
 module github.com/nntaoli-project/goex
 
-go 1.12
+go 1.13.4
 
 require (
 	github.com/Kucoin/kucoin-go-sdk v1.2.7
@@ -14,3 +14,5 @@ require (
 	github.com/valyala/fasthttp v1.6.0
 	golang.org/x/sys v0.0.0-20200124204421-9fbb57f87de9 // indirect
 )
+
+replace github.com/nntaoli-project/goex => ./github.com/xiaozhun/goex
