@@ -1,4 +1,4 @@
-module github.com/xiaozhun/goex
+module github.com/nntaoli-project/goex
 
 go 1.13.4
 
@@ -13,6 +13,7 @@ require (
 	github.com/stretchr/testify v1.4.0
 	github.com/valyala/fasthttp v1.6.0
 	golang.org/x/sys v0.0.0-20200124204421-9fbb57f87de9 // indirect
+	github.com/nntaoli-project/goex v2.0
 )
 
-replace github.com/nntaoli-project/goex => ./github.com/xiaozhun/goex
+replace github.com/nntaoli-project/goex => ../github.com/xiaozhun/goex
