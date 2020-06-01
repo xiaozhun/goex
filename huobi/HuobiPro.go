@@ -417,7 +417,7 @@ func (hbpro *HuoBiPro) GetOrderHistorys(currency CurrencyPair, currentPage, page
 	return hbpro.getOrders(queryOrdersParams{
 		pair:   currency,
 		size:   pageSize,
-		states: "partial-canceled,filled",
+		states: "partial-canceled,filled,submitted,partial-filled,canceled",
 		direct: "next",
 	})
 }
