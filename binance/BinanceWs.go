@@ -92,7 +92,7 @@ func (bnWs *BinanceWs) SetCallbacks(
 	bnWs.klineCallback = klineCallback
 }
 
-func (bnWs *BinanceWs) subscribe(endpoint string, handle func(msg []byte) error) {
+func (bnWs *BinanceWs) Subscribe(endpoint string, handle func(msg []byte) error) *WsConn {
 	wsConn := NewWsBuilder().
 		WsUrl(endpoint).
 		AutoReconnect().
@@ -102,6 +102,7 @@ func (bnWs *BinanceWs) subscribe(endpoint string, handle func(msg []byte) error)
 		Build()
 	bnWs.wsConns = append(bnWs.wsConns, wsConn)
 	go bnWs.exitHandler(wsConn)
+	return wsConn
 }
 
 func (bnWs *BinanceWs) Close() {
@@ -121,9 +122,9 @@ func (bnWs *BinanceWs) SubscribeDepth(pair CurrencyPair, size int) error {
 
 	handle := func(msg []byte) error {
 		rawDepth := struct {
-			LastUpdateID int64           `json:"lastUpdateId"`
-			Bids         [][]interface{} `json:"bids"`
-			Asks         [][]interface{} `json:"asks"`
+			LastUpdateID int64           `json:"T"`
+			Bids         [][]interface{} `json:"b"`
+			Asks         [][]interface{} `json:"a"`
 		}{}
 
 		err := json.Unmarshal(msg, &rawDepth)
@@ -137,7 +138,7 @@ func (bnWs *BinanceWs) SubscribeDepth(pair CurrencyPair, size int) error {
 		bnWs.depthCallback(depth)
 		return nil
 	}
-	bnWs.subscribe(endpoint, handle)
+	bnWs.Subscribe(endpoint, handle)
 	return nil
 }
 
@@ -170,7 +171,7 @@ func (bnWs *BinanceWs) SubscribeTicker(pair CurrencyPair) error {
 			return errors.New("unknown message " + msgType)
 		}
 	}
-	bnWs.subscribe(endpoint, handle)
+	bnWs.Subscribe(endpoint, handle)
 	return nil
 }
 
@@ -217,7 +218,7 @@ func (bnWs *BinanceWs) SubscribeTrade(pair CurrencyPair) error {
 			return errors.New("unknown message " + msgType)
 		}
 	}
-	bnWs.subscribe(endpoint, handle)
+	bnWs.Subscribe(endpoint, handle)
 	return nil
 }
 
@@ -256,7 +257,7 @@ func (bnWs *BinanceWs) SubscribeKline(pair CurrencyPair, period int) error {
 			return errors.New("unknown message " + msgType)
 		}
 	}
-	bnWs.subscribe(endpoint, handle)
+	bnWs.Subscribe(endpoint, handle)
 	return nil
 }
 
@@ -341,7 +342,7 @@ func (bnWs *BinanceWs) SubscribeAggTrade(pair CurrencyPair, tradeCallback func(*
 			return errors.New("unknown message " + msgType)
 		}
 	}
-	bnWs.subscribe(endpoint, handle)
+	bnWs.Subscribe(endpoint, handle)
 	return nil
 }
 
@@ -380,7 +381,7 @@ func (bnWs *BinanceWs) SubscribeDiffDepth(pair CurrencyPair, depthCallback func(
 		depthCallback((*Depth)(unsafe.Pointer(diffDepth)))
 		return nil
 	}
-	bnWs.subscribe(endpoint, handle)
+	bnWs.Subscribe(endpoint, handle)
 	return nil
 }
 
