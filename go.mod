@@ -1,4 +1,4 @@
-module github.com/nntaoli-project/goex
+module goex
 
 go 1.13.4
 
@@ -8,12 +8,10 @@ require (
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/websocket v1.4.1
 	github.com/json-iterator/go v1.1.7
-	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
+	github.com/nntaoli-project/goex v0.0.0-20200601121919-29cd9c7a7901
 	github.com/nubo/jwt v0.0.0-20150918093313-da5b79c3bbaf
 	github.com/stretchr/testify v1.4.0
 	github.com/valyala/fasthttp v1.6.0
-	golang.org/x/sys v0.0.0-20200124204421-9fbb57f87de9 // indirect
-	github.com/nntaoli-project/goex v2.0
 )
 
-replace github.com/nntaoli-project/goex => ../github.com/xiaozhun/goex
+replace github.com/nntaoli-project/goex => ../goex
