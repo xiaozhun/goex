@@ -2,6 +2,9 @@ package okex
 
 import (
 	"fmt"
+	"github.com/go-openapi/errors"
+	. "github.com/nntaoli-project/goex"
+	"github.com/nntaoli-project/goex/internal/logger"
 	"sort"
 	"strings"
 	"time"
@@ -111,7 +114,7 @@ func (ok *OKExSpot) BatchPlaceOrders(orders []Order) ([]PlaceOrderResponse, erro
 func (ok *OKExSpot) PlaceOrder(ty string, ord *Order) (*Order, error) {
 	urlPath := "/api/spot/v3/orders"
 	param := PlaceOrderParam{
-		ClientOid:    ok.UUID(),
+		ClientOid:    GenerateOrderClientId(32),
 		InstrumentId: ord.Currency.AdaptUsdToUsdt().ToLower().ToSymbol("-"),
 	}
 
@@ -267,7 +270,7 @@ func (ok *OKExSpot) adaptOrder(response OrderResponse) *Order {
 	date, err := time.Parse(time.RFC3339, response.Timestamp)
 	//log.Println(date.Local().UnixNano()/int64(time.Millisecond))
 	if err != nil {
-		println(err)
+		logger.Error("parse timestamp err=",err,",timestamp=",response.Timestamp)
 	} else {
 		ordInfo.OrderTime = int(date.UnixNano() / int64(time.Millisecond))
 	}
